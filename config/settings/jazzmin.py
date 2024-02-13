@@ -82,6 +82,4 @@ JAZZMIN_SETTINGS = {
         "auth.user": "collapsible",
         "auth.group": "vertical_tabs",
     },
-    # Add a language dropdown into the admin
-    "language_chooser": "ru-ru",
 }
