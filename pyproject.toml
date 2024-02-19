@@ -15,6 +15,7 @@ psycopg2 = "^2.9.9"
 django-jazzmin = "^2.6.0"
 drf-yasg = "^1.21.7"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "^7.3.0"}
+celery = "^5.3.6"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"

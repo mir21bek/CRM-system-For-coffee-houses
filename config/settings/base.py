@@ -83,3 +83,8 @@ DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+
+RABBITMQ_USER = os.getenv("RABBITMQ_USER")
+RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD")
+
+CELERY_BROKER_URL = f"amqp://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@localhost:5672"

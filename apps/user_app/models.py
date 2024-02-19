@@ -36,7 +36,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     full_name = models.CharField(max_length=150, verbose_name="ФИО")
     date_of_birth = models.DateField(
-        validators=[validate_date_of_birth], verbose_name="Дата рождения"
+        validators=[validate_date_of_birth],
+        verbose_name="Дата рождения",
+        blank=True,
+        null=True,
     )
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     otp = models.PositiveIntegerField(null=True, blank=True)
