@@ -84,5 +84,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 
-
 CELERY_BROKER_URL = "amqp://localhost:5672"

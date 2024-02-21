@@ -18,6 +18,7 @@ django-phonenumber-field = {extras = ["phonenumberslite"], version = "^7.3.0"}
 celery = "^5.3.6"
 django-redis = "^5.4.0"
 sqlalchemy = "^2.0.27"
+eventlet = "^0.35.1"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^7.0.0"
