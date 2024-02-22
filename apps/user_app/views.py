@@ -4,6 +4,9 @@ from .serializers import CustomRegisterSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from apps.user_app.tasks import send_otp_code
+import logging
+
+logger = logging.getLogger("main")
 
 
 class ClientRegisterAPIView(APIView):
@@ -12,6 +15,7 @@ class ClientRegisterAPIView(APIView):
         responses={201: "Code send successfully", 400: "Bad request"},
     )
     def post(self, request):
+        logger.info("client register class")
         serializer = CustomRegisterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
