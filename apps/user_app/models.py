@@ -33,6 +33,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         validators=[validate_email],
         verbose_name="почтовый адрес",
         max_length=200,
+        unique=True,
     )
     full_name = models.CharField(max_length=150, verbose_name="ФИО")
     date_of_birth = models.DateField(

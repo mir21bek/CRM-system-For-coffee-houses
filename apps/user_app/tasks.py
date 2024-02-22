@@ -6,7 +6,7 @@ from config.settings import email
 from utils.services.send_email import generate_code_for_send_mail
 
 
-@shared_task
+@shared_task()
 def send_otp_code(user_id):
     user = CustomUser.objects.get(id=user_id)
     print("Before sending email")
@@ -18,6 +18,6 @@ def send_otp_code(user_id):
     )
     to_email = user.email
     from_email = email.EMAIL_HOST_USER
-    send_mail(subject, message, from_email, [to_email], fail_silently=True)
+    send_mail(subject, message, from_email, [to_email], fail_silently=False)
     print("After sending email")
     return user

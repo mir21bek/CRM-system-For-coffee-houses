@@ -3,7 +3,7 @@ from rest_framework.views import APIView
 from .serializers import CustomRegisterSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from .tasks import send_otp_code
+from apps.user_app.tasks import send_otp_code
 
 
 class ClientRegisterAPIView(APIView):

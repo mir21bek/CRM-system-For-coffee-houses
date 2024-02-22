@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "apps.user_app",
     # Third party apps
     "drf_yasg",
+    "celery",
     "phonenumber_field",
 ]
 
@@ -84,4 +85,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
 
-CELERY_BROKER_URL = "amqp://localhost:5672"
+CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672/"
