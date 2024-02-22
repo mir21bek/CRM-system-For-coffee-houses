@@ -44,6 +44,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     otp = models.PositiveIntegerField(null=True, blank=True)
+    otp_expiration = models.DateTimeField(null=True)
     groups = models.ManyToManyField(Group, related_name="custom_users", blank=True)
     user_permissions = models.ManyToManyField(
         Permission, related_name="custom_users", blank=True
@@ -58,7 +59,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["full_name"]
 
     def __str__(self):
-        return self.full_name
+        return f"{self.full_name} {self.email}"
 
     class Meta:
         verbose_name = "Все пользователи"

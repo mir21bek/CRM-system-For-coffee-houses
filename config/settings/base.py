@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     "celery",
     "phonenumber_field",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
