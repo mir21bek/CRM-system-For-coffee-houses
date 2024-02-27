@@ -1,3 +1,4 @@
+from django.contrib.auth import password_validation
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -43,8 +44,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         null=True,
     )
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
-    otp = models.PositiveIntegerField(null=True, blank=True)
-    otp_expiration = models.DateTimeField(null=True)
+    password = models.CharField(_("password"), max_length=128, blank=True)
+    otp = models.PositiveIntegerField(
+        null=True, blank=True, max_length=4, verbose_name="Код"
+    )
+    otp_expiration = models.DateTimeField(
+        null=True, blank=True, verbose_name="Срок кода"
+    )
+    login = models.CharField(
+        max_length=100, unique=True, verbose_name="Логин", null=True, blank=True
+    )
     groups = models.ManyToManyField(Group, related_name="custom_users", blank=True)
     user_permissions = models.ManyToManyField(
         Permission, related_name="custom_users", blank=True
@@ -57,6 +66,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["full_name"]
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self._password is not None:
+            password_validation.password_changed(self._password, self)
+            self._password = None
 
     def __str__(self):
         return f"{self.full_name} {self.email}"

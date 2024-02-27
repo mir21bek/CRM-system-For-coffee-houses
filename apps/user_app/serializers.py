@@ -24,7 +24,8 @@ class CheckOtpSerializer(serializers.ModelSerializer):
 
 
 class BaseLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True, help_text="Введите адрес эл. почты")
+    login = serializers.CharField(required=True, help_text="Введите логин")
+    password = serializers.CharField(required=True, help_text="Введите пароль")
 
     def validate_role(self, value):
         if value not in CustomUser.ROLE:
@@ -32,7 +33,13 @@ class BaseLoginSerializer(serializers.Serializer):
         return value
 
 
-class ClientLoginSerializer(BaseLoginSerializer):
+class ClientLoginSerializer(serializers.ModelSerializer):
+    email = serializers.CharField(required=True, help_text="Введите адрес эл. почты")
+
+    class Meta:
+        model = CustomUser
+        fields = ("email",)
+
     def create(self, validated_data):
         validated_data["role"] = "client"
         return CustomUser.objects.create(**validated_data)
@@ -50,7 +57,7 @@ class BaristaLoginSerializer(BaseLoginSerializer):
         return CustomUser.objects.create(**validated_data)
 
 
-class WaiterLoginSerializer(BaseLoginSerializer):
+class WaiterLoginSerializer(BaristaLoginSerializer):
     def create(self, validated_data):
-        validated_data["role"] = "barista"
+        validated_data["role"] = "waiter"
         return CustomUser.objects.create(**validated_data)

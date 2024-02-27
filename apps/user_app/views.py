@@ -1,7 +1,14 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer, CheckOtpSerializer, LoginSerializer
+from .serializers import (
+    RegisterSerializer,
+    CheckOtpSerializer,
+    ClientLoginSerializer,
+    AdminLoginSerializer,
+    BaristaLoginSerializer,
+    WaiterLoginSerializer,
+)
 from rest_framework.response import Response
 from rest_framework import status
 from utils.services.send_email import check_and_activate
@@ -50,7 +57,7 @@ class CheckOtpAPIView(APIView):
             if user:
                 if (
                     user.otp_expiration
-                    and (timezone.now() - user.otp_expiration).total_seconds <= 180
+                    and (timezone.now() - user.otp_expiration).total_seconds() <= 180
                 ):
                     return check_and_activate(user, otp)
                 else:
@@ -95,7 +102,7 @@ class ResentOtpAPIView(APIView):
 
 class ClientLoginAPIView(APIView):
     @swagger_auto_schema(
-        request_body=LoginSerializer,
+        request_body=ClientLoginSerializer,
         responses={201: "Successfully", 400: "Bad request"},
     )
     def post(self, request):
@@ -158,4 +165,114 @@ class LogoutAPIView(APIView):
             return Response(
                 {"error": "Token is required to log out"},
                 status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class AdminLoginAPIView(APIView):
+    @swagger_auto_schema(
+        request_body=AdminLoginSerializer,
+        responses={201: "Successfully", 400: "Bad request"},
+    )
+    def post(self, request):
+        logger.info("admin login view")
+        login = request.data.get("login")
+        password = request.data.get("password")
+        try:
+            user = CustomUser.objects.get(login=login, password=password)
+            if user.role == "admin":
+                if not user.is_verify:
+                    send_otp_code.delay(user.id)
+                    return Response(
+                        {"message": "Code send successfully"},
+                        status=status.HTTP_201_CREATED,
+                    )
+                else:
+                    refresh = RefreshToken.for_user(user)
+                    return Response(
+                        {
+                            "message": "Successfully login",
+                            "token": {
+                                "refresh": str(refresh),
+                                "access": str(refresh.access_token),
+                            },
+                        }
+                    )
+            else:
+                return Response({"error": "You are not is admin"})
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "Login is not found"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class BaristaLoginAPIView(APIView):
+    @swagger_auto_schema(
+        request_body=BaristaLoginSerializer,
+        responses={201: "Successfully", 400: "Bad request"},
+    )
+    def post(self, request):
+        login = request.data.get("login")
+        password = request.data.get("password")
+        try:
+            user = CustomUser.objects.get(login=login, password=password)
+            if user.role == "barista":
+                if not user.is_verify:
+                    send_otp_code.delay(user.id)
+                    return Response(
+                        {"message": "Code send successfully"},
+                        status=status.HTTP_201_CREATED,
+                    )
+                else:
+                    refresh = RefreshToken.for_user(user)
+                    return Response(
+                        {
+                            "message": "Successfully login",
+                            "token": {
+                                "refresh": str(refresh),
+                                "access": str(refresh.access_token),
+                            },
+                        }
+                    )
+            else:
+                return Response({"error": "You are not is barista"})
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "Login is not found"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class WaiterLoginAPIView(APIView):
+    @swagger_auto_schema(
+        request_body=WaiterLoginSerializer,
+        responses={201: "Successfully", 400: "Bad request"},
+    )
+    def post(self, request):
+        logger.info("admin login view")
+        login = request.data.get("login")
+        password = request.data.get("password")
+        try:
+            user = CustomUser.objects.get(login=login, password=password)
+            if user.role == "waiter":
+                if not user.is_verify:
+                    send_otp_code.delay(user.id)
+                    return Response(
+                        {"message": "Code send successfully"},
+                        status=status.HTTP_201_CREATED,
+                    )
+                else:
+                    refresh = RefreshToken.for_user(user)
+                    return Response(
+                        {
+                            "message": "Successfully login",
+                            "token": {
+                                "refresh": str(refresh),
+                                "access": str(refresh.access_token),
+                            },
+                        }
+                    )
+            else:
+                return Response({"error": "You are not is waiter"})
+        except CustomUser.DoesNotExist:
+            return Response(
+                {"error": "Login is not found"}, status=status.HTTP_400_BAD_REQUEST
             )
