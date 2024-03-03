@@ -45,9 +45,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     )
     phone_number = PhoneNumberField(blank=True, null=True, unique=True)
     password = models.CharField(_("password"), max_length=128, blank=True)
-    otp = models.PositiveIntegerField(
-        null=True, blank=True, max_length=4, verbose_name="Код"
-    )
+    otp = models.PositiveIntegerField(null=True, blank=True, verbose_name="Код")
     otp_expiration = models.DateTimeField(
         null=True, blank=True, verbose_name="Срок кода"
     )
