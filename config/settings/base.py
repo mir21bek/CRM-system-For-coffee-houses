@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Local apps
     "apps.user_app",
+    "apps.admins",
     # Third party apps
     "drf_yasg",
     "celery",
