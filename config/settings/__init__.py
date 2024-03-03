@@ -1,5 +1,9 @@
+from .auth import *
 from .base import *
 from .database import *
-from .logging import *
 from .drf import *
-from .auth import *
+from .logging import *
+from .email import *
+from .celery import app as celery_app
+
+__all__ = ("celery_app",)
