@@ -11,7 +11,7 @@ User = get_user_model()
 @receiver(post_save, sender=CustomUser)
 def create_client_profile(sender, instance, created, **kwargs):
     """Creates a profile when a new user is created"""
-    print("Signal received for user:", instance)
+    print("Signal received for client user:", instance)
     if created and hasattr(instance, "role") and instance.role == "client":
         print("Creating client profile for user:", instance)
         ClientProfile.objects.create(user=instance)
@@ -20,14 +20,14 @@ def create_client_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=CustomUser)
 def create_client_profile(sender, instance, created, **kwargs):
     """Creates a profile when a new user is created"""
-    print("Signal received for user:", instance)
+    print("Signal received for employee user:", instance)
     if created:
         if hasattr(instance, "role") and (
             instance.role == "waiter"
             or instance.role == "barista"
             or instance.role == "admin"
         ):
-            print("Creating client profile for user:", instance)
+            print("Creating employee profile for user:", instance)
             EmployeeProfile.objects.create(user=instance)
         else:
-            print("Not creating client profile for user:", instance)
+            print("Not creating employee profile for user:", instance)

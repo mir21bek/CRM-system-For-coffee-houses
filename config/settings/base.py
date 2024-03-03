@@ -31,7 +31,9 @@ INSTALLED_APPS = [
     "apps.user_app",
     # Third party apps
     "drf_yasg",
+    "celery",
     "phonenumber_field",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -83,3 +85,5 @@ DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+
+CELERY_BROKER_URL = "amqp://guest:guest@localhost:5672/"

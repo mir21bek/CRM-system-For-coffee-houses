@@ -9,6 +9,7 @@ from .models import (
 )
 
 
+@admin.register(EmployeeProfile)
 class EmployeeProfileAdmin(admin.ModelAdmin):
     list_display = (
         "get_full_name",
@@ -44,8 +45,20 @@ class EmployeeProfileAdmin(admin.ModelAdmin):
     get_phone_number.short_description = "Телефон номер"
 
 
-admin.site.register(CustomUser)
-admin.site.register(ClientProfile)
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    list_display = ("full_name", "email", "role")
+
+
+@admin.register(ClientProfile)
+class ClientProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "get_email")
+
+    def get_email(self, obj):
+        return obj.user.email
+
+    get_email.short_description = "Почта"
+
+
 admin.site.register(EmployeeSchedule)
-admin.site.register(EmployeeProfile, EmployeeProfileAdmin)
 admin.site.register(EmployeeWorkdays)
