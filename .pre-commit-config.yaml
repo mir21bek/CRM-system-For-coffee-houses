@@ -3,17 +3,9 @@ repos:
     rev: 6.0.0
     hooks:
     - id: flake8
-      entry: flake8 --config .flake .
-
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-    - id: isort
-      entry: isort --settings-file ./.isort.cfg .
 
   - repo: https://github.com/ambv/black
     rev: 23.3.0
     hooks:
     - id: black
-      entry: black --config ./.black .
       language_version: python3.10
