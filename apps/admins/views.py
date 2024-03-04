@@ -1,3 +1,8 @@
-# from django.shortcuts import render
+from rest_framework.views import APIView
 
-# Create your views here.
+# from .models import Branches
+# from drf_yasg.utils import swagger_auto_schema
+
+
+class BranchAPIView(APIView):
+    pass
