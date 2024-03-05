@@ -11,6 +11,22 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
+from django.contrib.auth.models import BaseUserManager
+
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, full_name, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, full_name=full_name, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, full_name, password=None, **extra_fields):
+        extra_fields.setdefault("is_superuser", True)
+        return self.create_user(email, full_name, password, **extra_fields)
 
 
 def validate_date_of_birth(value):
@@ -60,7 +76,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    objects = BaseUserManager()
+    objects = CustomUserManager()
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["full_name"]
