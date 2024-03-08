@@ -60,10 +60,9 @@ class Branches(models.Model):
     table_quantity = models.PositiveIntegerField(
         verbose_name="Количество столов", db_index=True, null=True
     )
-    menu = models.ForeignKey(
+    menu = models.ManyToManyField(
         "admins.Menu",
-        on_delete=models.SET_NULL,
-        null=True,
+        blank=True,
         verbose_name="Меню",
         related_name="branch_menu",
     )

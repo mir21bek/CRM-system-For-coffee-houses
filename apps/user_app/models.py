@@ -73,6 +73,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         Permission, related_name="custom_users", blank=True
     )
     is_verify = models.BooleanField(default=False)
+    is_super_admin = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
